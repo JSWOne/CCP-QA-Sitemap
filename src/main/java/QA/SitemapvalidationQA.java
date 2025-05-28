@@ -1,4 +1,4 @@
-package org.example;
+package QA;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Sitemapvalidation {
+public class SitemapvalidationQA {
 
     public static void main(String[] args) {
         String sitemapUrl = "https://qa-ssr.msme.jswone.in/sitemap.xml"; // Replace with your sitemap URL
@@ -86,11 +86,19 @@ public class Sitemapvalidation {
     // Generate a clean PDF report
     private static void generatePDFReport(List<UrlStatus> urlStatusList, int totalUrls) {
         try {
+            // Create the reports folder if it doesn't exist
+            File folder = new File("PDF Report");
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
+            // Define the output file path
+            String outputPath = "target/PDF Report/sitemap_validation_report.pdf";
+
             // Prepare the PDF writer and document
-            PdfWriter writer = new PdfWriter("sitemap_validation_report.pdf");
+            PdfWriter writer = new PdfWriter(outputPath);
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
-
             // Title
             document.add(new Paragraph("Sitemap URL Validation Report")
                     .setFontSize(18)
@@ -126,7 +134,7 @@ public class Sitemapvalidation {
 
             // Close the document
             document.close();
-            System.out.println("✅ PDF report generated: sitemap_validation_report.pdf");
+            System.out.println("✅ PDF report generated: " + outputPath);
         } catch (Exception e) {
             System.err.println("Error generating PDF report: " + e.getMessage());
         }
